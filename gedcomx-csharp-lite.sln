@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gedcomx-csharp-lite", "gedcomx-csharp-lite\gedcomx-csharp-lite.csproj", "{DC9C289B-4ECC-41C5-8845-D29BEDACD45E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example1", "Example1\Example1.csproj", "{9CD0258C-FC2D-493A-8D27-F6BD06C6776D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GEDCOM X Model", "Gedcomx.Model\GEDCOM X Model.csproj", "{4629BA54-406E-4CD2-9DC6-CDA2C5206EB7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC9C289B-4ECC-41C5-8845-D29BEDACD45E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC9C289B-4ECC-41C5-8845-D29BEDACD45E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC9C289B-4ECC-41C5-8845-D29BEDACD45E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC9C289B-4ECC-41C5-8845-D29BEDACD45E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CD0258C-FC2D-493A-8D27-F6BD06C6776D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CD0258C-FC2D-493A-8D27-F6BD06C6776D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CD0258C-FC2D-493A-8D27-F6BD06C6776D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CD0258C-FC2D-493A-8D27-F6BD06C6776D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4629BA54-406E-4CD2-9DC6-CDA2C5206EB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4629BA54-406E-4CD2-9DC6-CDA2C5206EB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4629BA54-406E-4CD2-9DC6-CDA2C5206EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4629BA54-406E-4CD2-9DC6-CDA2C5206EB7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
