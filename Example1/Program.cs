@@ -36,14 +36,15 @@ namespace Example1
 			var response = ft.Get("/platform/tree/persons/" + personId.Last()).Result;
 
 			// By presuming we have single element.
-			Console.WriteLine(response.persons[0].id + response.persons[0].display.name);
+			Console.WriteLine(response.persons[0].id + " - " + response.persons[0].display.name);
 
 			// By looping over the first.
 			foreach (var p in response.persons)
 			{
-				Console.WriteLine(p.id + " " + p.display.name);
+				Console.WriteLine(p.id + " - " + p.display.name);
 			}
 
+			Console.WriteLine("Press Enter to Exit");
 			Console.ReadLine();
 		}
 	}

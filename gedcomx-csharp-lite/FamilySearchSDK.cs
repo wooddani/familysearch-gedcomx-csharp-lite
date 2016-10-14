@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -12,6 +9,13 @@ using System.Threading.Tasks;
 
 namespace gedcomx_csharp_lite
 {
+	public enum Environment
+	{
+		Production,
+		Beta,
+		Sandbox
+	}
+
 	public class FamilySearchSDK
 	{
 		private const string MEDIA_TYPE_GEDCOMX_V1_JSON = "application/x-gedcomx-v1+json";
@@ -21,11 +25,22 @@ namespace gedcomx_csharp_lite
 
 		public string AccessToken { get { return _accessToken; } }
 
-		private void InitClient(bool useSandBox)
+		private void InitClient(Environment environment)
 		{
-			_baseUrl = useSandBox ?
-				new Uri("https://sandbox.familysearch.org/platform/collections/tree") : // sandbox
-				new Uri("https://familysearch.org/platform/collections/tree"); // production
+			switch (environment)
+			{
+				case Environment.Production:
+					_baseUrl = new Uri("https://familysearch.org/platform/collections/tree");
+					break;
+				case Environment.Beta:
+					_baseUrl = new Uri("https://beta.familysearch.org/platform/collections/tree");
+					break;
+				case Environment.Sandbox:
+					_baseUrl = new Uri("https://sandbox.familysearch.org/platform/collections/tree");
+					break;
+				default: // Do nothing
+					throw new ApplicationException("Unexpected environment");
+			}	
 
 			var cookieContainer = new CookieContainer();
 			_client = new HttpClient() { BaseAddress = _baseUrl };
@@ -33,7 +48,7 @@ namespace gedcomx_csharp_lite
 			_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 		}
 
-		public FamilySearchSDK(string username, string password, string clientId, bool useSandBox = true)
+		public FamilySearchSDK(string username, string password, string clientId, Environment environment = Environment.Sandbox)
 		{
 			IDictionary<String, String> formData = new Dictionary<String, String>();
 			formData.Add("grant_type", "password");
@@ -41,18 +56,18 @@ namespace gedcomx_csharp_lite
 			formData.Add("password", password);
 			formData.Add("client_id", clientId);
 
-			GetAccessToken(formData);
+			GetAccessToken(formData, environment);
 
-			InitClient(useSandBox);
+			InitClient(environment);
 		}
 
-		public FamilySearchSDK(string accessToken, bool useSandBox = false)
+		public FamilySearchSDK(string accessToken, Environment environment = Environment.Sandbox)
 		{
 			_accessToken = accessToken;
-			InitClient(useSandBox);
+			InitClient(environment);
 		}
 
-		private void GetAccessToken(IDictionary<string, string> formData)
+		private void GetAccessToken(IDictionary<string, string> formData, Environment environment)
 		{
 			using (var httpClient = new HttpClient())
 			{
@@ -61,7 +76,24 @@ namespace gedcomx_csharp_lite
 					content.Headers.Clear();
 					content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
 					httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-					var response = httpClient.PostAsync("https://integration.familysearch.org/cis-web/oauth2/v3/token", content).Result;
+
+					string url = "";
+					switch (environment)
+					{
+						case Environment.Production:
+							url = "https://integration.familysearch.org/cis-web/oauth2/v3/token";
+							break;
+						case Environment.Beta:
+							url = "https://integration.familysearch.org/cis-web/oauth2/v3/token";
+							break;
+						case Environment.Sandbox:
+							url = "https://integration.familysearch.org/cis-web/oauth2/v3/token";
+							break;
+						default: // Do nothing
+							throw new ApplicationException("Unexpected environment");
+					}
+
+					var response = httpClient.PostAsync(url, content).Result;
 
 					if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 					{
