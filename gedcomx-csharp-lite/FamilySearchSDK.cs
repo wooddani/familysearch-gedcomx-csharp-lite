@@ -9,16 +9,8 @@ using System.Threading.Tasks;
 
 namespace gedcomx_csharp_lite
 {
-	public enum Environment
-	{
-		Production,
-		Beta,
-		Sandbox
-	}
-
 	public class FamilySearchSDK
 	{
-		private const string MEDIA_TYPE_GEDCOMX_V1_JSON = "application/x-gedcomx-v1+json";
 		private HttpClient _client = null;
 		private Uri _baseUrl;
 		private string _accessToken = null;
@@ -30,22 +22,48 @@ namespace gedcomx_csharp_lite
 			switch (environment)
 			{
 				case Environment.Production:
-					_baseUrl = new Uri("https://familysearch.org/platform/collections/tree");
+					_baseUrl = new Uri("https://familysearch.org/");
 					break;
 				case Environment.Beta:
-					_baseUrl = new Uri("https://beta.familysearch.org/platform/collections/tree");
+					_baseUrl = new Uri("https://beta.familysearch.org/");
 					break;
 				case Environment.Sandbox:
-					_baseUrl = new Uri("https://sandbox.familysearch.org/platform/collections/tree");
+					_baseUrl = new Uri("https://sandbox.familysearch.org/");
 					break;
 				default: // Do nothing
 					throw new ApplicationException("Unexpected environment");
-			}	
+			}
 
 			var cookieContainer = new CookieContainer();
 			_client = new HttpClient() { BaseAddress = _baseUrl };
-			_client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MEDIA_TYPE_GEDCOMX_V1_JSON));
 			_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+		}
+
+		public static string GetAcceptContentType(MediaType mediaType)
+		{
+			switch (mediaType)
+			{
+				case MediaType.APPLICATION_JSON_TYPE:
+					return "application/json";
+				case MediaType.GEDCOMX_JSON_MEDIA_TYPE:
+					return "application/x-gedcomx-v1+json";
+				case MediaType.GEDCOMX_RECORDSET_JSON_MEDIA_TYPE:
+					return "application/x-gedcomx-records-v1+json";
+				case MediaType.ATOM_GEDCOMX_JSON_MEDIA_TYPE:
+					return "application/x-gedcomx-atom+json";
+				case MediaType.FS_JSON_MEDIA_TYPE:
+					return "application/x-fs-v1+json";
+				default:
+					throw new ApplicationException("Bad MediaType");
+			}
+		}
+
+		private string SetMediaType(MediaType mediaType)
+		{
+			var type = GetAcceptContentType(mediaType);
+			_client.DefaultRequestHeaders.Accept.Clear();
+			_client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(type));
+			return type;
 		}
 
 		public FamilySearchSDK(string username, string password, string clientId, Environment environment = Environment.Sandbox)
@@ -128,66 +146,69 @@ namespace gedcomx_csharp_lite
 		/// </summary>
 		/// <param name="apiRoute">any family search api route such as /platform/tree/persons/L11X-X11</param>
 		/// <returns>Dynamic object ready for referencing</returns>
-		public async Task<dynamic> Get(string apiRoute)
+		public async Task<dynamic> Get(string apiRoute, MediaType mediaType = MediaType.APPLICATION_JSON_TYPE)
 		{
-			var url = new Uri(_baseUrl, apiRoute);
+			SetMediaType(mediaType);
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
 			var response = await _client.GetAsync(url).ConfigureAwait(false);
 			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
 			return JsonConvert.DeserializeObject(s);
 		}
 
-		public async Task<T> Get<T>(string apiRoute)
+		public async Task<T> Get<T>(string apiRoute, MediaType mediaType = MediaType.APPLICATION_JSON_TYPE)
 		{
-			var url = new Uri(_baseUrl, apiRoute);
+			SetMediaType(mediaType);
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
 			var response = await _client.GetAsync(url).ConfigureAwait(false);
 			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
 			return JsonConvert.DeserializeObject<T>(s);
 		}
 
-		public async Task<HttpResponseMessage> Head(string apiRoute)
+		public async Task<HttpResponseMessage> Head(string apiRoute, MediaType mediaType = MediaType.APPLICATION_JSON_TYPE)
 		{
-			var url = new Uri(_baseUrl, apiRoute);
+			SetMediaType(mediaType);
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
 			return await _client.GetAsync(url).ConfigureAwait(false);
 		}
 
-		public async Task<dynamic> Put(string apiRoute, string content)
+		public async Task<dynamic> Put(string apiRoute, string content, MediaType mediaType)
 		{
-			var url = new Uri(_baseUrl, apiRoute);
-			var body = new StringContent(content, Encoding.UTF8, MEDIA_TYPE_GEDCOMX_V1_JSON);
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
+			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
 			var response = await _client.PutAsync(url, body).ConfigureAwait(false);
 			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
 			return JsonConvert.DeserializeObject<dynamic>(s);
 		}
 
-		public async Task<T> Put<T>(string apiRoute, string content)
+		public async Task<T> Put<T>(string apiRoute, string content, MediaType mediaType)
 		{
-			var url = new Uri(_baseUrl, apiRoute);
-			var body = new StringContent(content, Encoding.UTF8, MEDIA_TYPE_GEDCOMX_V1_JSON);
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
+			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
 			var response = await _client.PutAsync(url, body).ConfigureAwait(false);
 			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
 			return JsonConvert.DeserializeObject<T>(s);
 		}
 
-		public async Task<HttpResponseMessage> Put_GetResponse(string apiRoute, string content)
+		public async Task<HttpResponseMessage> Put_GetResponse(string apiRoute, string content, MediaType mediaType)
 		{
-			var url = new Uri(_baseUrl, apiRoute);
-			var body = new StringContent(content, Encoding.UTF8, MEDIA_TYPE_GEDCOMX_V1_JSON);
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
+			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
 			return await _client.PutAsync(url, body).ConfigureAwait(false);
 		}
 
-		public async Task<HttpResponseMessage> Put_GetContent(string apiRoute, string content)
+		public async Task<HttpResponseMessage> Put_GetContent(string apiRoute, string content, MediaType mediaType)
 		{
-			var url = new Uri(_baseUrl, apiRoute);
-			var body = new StringContent(content, Encoding.UTF8, MEDIA_TYPE_GEDCOMX_V1_JSON);
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
+			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
 			var response = await _client.PutAsync(url, body).ConfigureAwait(false);
 			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
 			return JsonConvert.DeserializeObject<dynamic>(s);
 		}
 
-		public async Task<dynamic> Post(string apiRoute, string content)
+		public async Task<dynamic> Post(string apiRoute, string content, MediaType mediaType)
 		{
-			var url = new Uri(_baseUrl, apiRoute);
-			var body = new StringContent(content, Encoding.UTF8, MEDIA_TYPE_GEDCOMX_V1_JSON);
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
+			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
 			var response = await _client.PostAsync(url, body).ConfigureAwait(false);
 			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
 			if (string.IsNullOrEmpty(s))
@@ -197,26 +218,26 @@ namespace gedcomx_csharp_lite
 			return JsonConvert.DeserializeObject<dynamic>(s);
 		}
 
-		public async Task<HttpResponseMessage> Post_GetResponse(string apiRoute, string content)
+		public async Task<HttpResponseMessage> Post_GetResponse(string apiRoute, string content, MediaType mediaType)
 		{
-			var url = new Uri(_baseUrl, apiRoute);
-			var body = new StringContent(content, Encoding.UTF8, MEDIA_TYPE_GEDCOMX_V1_JSON);
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
+			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
 			return await _client.PostAsync(url, body).ConfigureAwait(false);
 		}
 
-		public async Task<HttpResponseMessage> Post_GetContent(string apiRoute, string content)
+		public async Task<HttpResponseMessage> Post_GetContent(string apiRoute, string content, MediaType mediaType)
 		{
-			var url = new Uri(_baseUrl, apiRoute);
-			var body = new StringContent(content, Encoding.UTF8, MEDIA_TYPE_GEDCOMX_V1_JSON);
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
+			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
 			var response = await _client.PostAsync(url, body).ConfigureAwait(false);
 			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
 			return JsonConvert.DeserializeObject<dynamic>(s);
 		}
 
-		public async Task<T> Post<T>(string apiRoute, string content)
+		public async Task<T> Post<T>(string apiRoute, string content, MediaType mediaType)
 		{
-			var url = new Uri(_baseUrl, apiRoute);
-			var body = new StringContent(content, Encoding.UTF8, MEDIA_TYPE_GEDCOMX_V1_JSON);
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
+			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
 			var response = await _client.PostAsync(url, body).ConfigureAwait(false);
 			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
 			return JsonConvert.DeserializeObject<T>(s);
@@ -224,7 +245,7 @@ namespace gedcomx_csharp_lite
 
 		public async Task<dynamic> Delete(string apiRoute)
 		{
-			var url = new Uri(_baseUrl, apiRoute);
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
 			var response = await _client.DeleteAsync(url).ConfigureAwait(false);
 			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
 			if (string.IsNullOrEmpty(s))

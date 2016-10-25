@@ -33,12 +33,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Gedcomx.Model, Version=1.0.6131.22084, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gedcomx.Model.1.0.6131.22084\lib\net45\Gedcomx.Model.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Gedcomx.Model.Fs, Version=1.0.6131.22085, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Gedcomx.Model.Fs\bin\Debug\Gedcomx.Model.Fs.dll</HintPath>
+    </Reference>
+    <Reference Include="Gedcomx.Model.Rs, Version=1.0.6131.22085, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gedcomx.Model.Rs.1.0.6131.22085\lib\net45\Gedcomx.Model.Rs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,10 +72,6 @@
     <ProjectReference Include="..\gedcomx-csharp-lite\gedcomx-csharp-lite.csproj">
       <Project>{dc9c289b-4ecc-41c5-8845-d29bedacd45e}</Project>
       <Name>gedcomx-csharp-lite</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Gedcomx.Model\GEDCOM X Model.csproj">
-      <Project>{4629BA54-406E-4CD2-9DC6-CDA2C5206EB7}</Project>
-      <Name>GEDCOM X Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
