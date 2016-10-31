@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace gedcomx_csharp_lite
+namespace Gedcomx.Api.Lite
 {
 	public class FamilySearchSDK
 	{
@@ -62,15 +62,15 @@ namespace gedcomx_csharp_lite
 		{
 			switch (mediaType)
 			{
-				case MediaType.APPLICATION_JSON_TYPE:
+				case MediaType.APPLICATION_JSON:
 					return "application/json";
-				case MediaType.GEDCOMX_JSON_MEDIA_TYPE:
+				case MediaType.X_GEDCOMX_v1_JSON:
 					return "application/x-gedcomx-v1+json";
-				case MediaType.GEDCOMX_RECORDSET_JSON_MEDIA_TYPE:
+				case MediaType.X_GEDCOMX_RECORDS_v1_JSON:
 					return "application/x-gedcomx-records-v1+json";
-				case MediaType.ATOM_GEDCOMX_JSON_MEDIA_TYPE:
+				case MediaType.X_GEDCOMX_ATOM_JSON:
 					return "application/x-gedcomx-atom+json";
-				case MediaType.FS_JSON_MEDIA_TYPE:
+				case MediaType.X_FS_v1_JSON:
 					return "application/x-fs-v1+json";
 				default:
 					throw new ApplicationException("Bad MediaType");
@@ -148,7 +148,7 @@ namespace gedcomx_csharp_lite
 		/// </summary>
 		/// <param name="apiRoute">any family search api route such as /platform/tree/persons/L11X-X11</param>
 		/// <returns>Dynamic object ready for referencing</returns>
-		public async Task<dynamic> Get(string apiRoute, MediaType mediaType = MediaType.APPLICATION_JSON_TYPE)
+		public async Task<dynamic> Get(string apiRoute, MediaType mediaType = MediaType.APPLICATION_JSON)
 		{
 			SetMediaType(mediaType);
 			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
@@ -157,7 +157,7 @@ namespace gedcomx_csharp_lite
 			return JsonConvert.DeserializeObject(s);
 		}
 
-		public async Task<T> Get<T>(string apiRoute, MediaType mediaType = MediaType.APPLICATION_JSON_TYPE)
+		public async Task<T> Get<T>(string apiRoute, MediaType mediaType = MediaType.APPLICATION_JSON)
 		{
 			SetMediaType(mediaType);
 			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
@@ -166,7 +166,7 @@ namespace gedcomx_csharp_lite
 			return JsonConvert.DeserializeObject<T>(s);
 		}
 
-		public async Task<HttpResponseMessage> Head(string apiRoute, MediaType mediaType = MediaType.APPLICATION_JSON_TYPE)
+		public async Task<HttpResponseMessage> Head(string apiRoute, MediaType mediaType = MediaType.APPLICATION_JSON)
 		{
 			SetMediaType(mediaType);
 			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));

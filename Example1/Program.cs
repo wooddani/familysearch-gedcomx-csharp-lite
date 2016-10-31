@@ -1,16 +1,11 @@
-﻿using gedcomx_csharp_lite;
+﻿using Gedcomx.Api.Lite;
 using Gx.Common;
-using Gx.Conclusion;
 using Gx.Fs.Tree;
-using Gx.Types;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Example1
 {
@@ -30,23 +25,26 @@ namespace Example1
 			gedcomx.AddPerson(TestBacking.GetCreateMalePerson());
 
 			// Now post two of them to family search asynchronously
-			var postTask = ft.Post("/platform/tree/persons", JsonConvert.SerializeObject(gedcomx), MediaType.GEDCOMX_JSON_MEDIA_TYPE);
-			var postTask2 = ft.Post("/platform/tree/persons", JsonConvert.SerializeObject(gedcomx), MediaType.GEDCOMX_JSON_MEDIA_TYPE);
+			var postTask = ft.Post("/platform/tree/persons", JsonConvert.SerializeObject(gedcomx), MediaType.X_GEDCOMX_v1_JSON);
+			var postTask2 = ft.Post("/platform/tree/persons", JsonConvert.SerializeObject(gedcomx), MediaType.X_GEDCOMX_v1_JSON);
 			Task.WaitAll(postTask, postTask2);
 			var postResultSon = postTask.Result;
 			var postResultFather = postTask2.Result;
 
 			// Or if only one and you want synchronous results
-			var postResults3 = ft.Post("/platform/tree/persons", JsonConvert.SerializeObject(gedcomx), MediaType.GEDCOMX_JSON_MEDIA_TYPE).Result;
+			var postResults3 = ft.Post("/platform/tree/persons", JsonConvert.SerializeObject(gedcomx), MediaType.X_GEDCOMX_v1_JSON).Result;
 
 			// Now get the new person.
-			string[] personId = postResultSon.Headers.Location.ToString().Split('/');
-			var response = ft.Get("/platform/tree/persons/" + personId.Last()).Result;
+			string personId = ((string[])postResultSon.Headers.Location.ToString().Split('/')).Last();
+			var response = ft.Get("/platform/tree/persons/" + personId).Result;
 
 			// By presuming we have single element.
 			Console.WriteLine(response.persons[0].id + " - " + response.persons[0].display.name);
 
-
+			// Get a person's portrait
+			var portraitResponse = ft.Get($"/platform/tree/persons/{personId}/portrait", MediaType.X_FS_v1_JSON);
+			var portrait = portraitResponse.Result;
+			//Console.WriteLine(response.persons[0].id + " - " + response.persons[0].display.name);
 
 			// Set parentage
 			List<ChildAndParentsRelationship> relationships = new List<ChildAndParentsRelationship>();
@@ -58,22 +56,22 @@ namespace Example1
 			// use an array wrapper as we have to name the array.
 			var content = JsonConvert.SerializeObject(new { childAndParentsRelationships = relationships }, jsettings);
 
-			var rel = ft.Post("/platform/tree/relationships", content, MediaType.FS_JSON_MEDIA_TYPE);
+			var rel = ft.Post("/platform/tree/relationships", content, MediaType.X_FS_v1_JSON);
 			var results = rel.Result;
 
 			// Now read the relationship back. (the Son)
-			var anc = ft.Get("/platform/tree/ancestry?person=" + personId.Last()).Result;
-			Console.WriteLine($"For {personId.Last()} then have these ancestors");
+			var anc = ft.Get("/platform/tree/ancestry?person=" + personId).Result;
+			Console.WriteLine($"For {personId} then have these ancestors");
 			foreach (var a in anc.persons)
 			{
 				Console.WriteLine(a.id + " - " + a.display.name);
 			}
-
+			
 
 			// Now search!
 			//platform/tree/search?q=motherGivenName%3AClarissa~%20fatherSurname%3AHeaton~%20motherSurname%3AHoyt~%20surname%3AHeaton~%20givenName%3AIsrael~%20fatherGivenName%3AJonathan~
 			var encoded = Uri.EscapeDataString("motherGivenName:Clarissa~ fatherSurname:Heaton~ motherSurname:Hoyt~ surname:Heaton~ givenName:Israel~ fatherGivenName:Jonathan~");
-			var searchResult = ft.Get("/platform/tree/search?q=" + encoded, MediaType.ATOM_GEDCOMX_JSON_MEDIA_TYPE).Result;
+			var searchResult = ft.Get("/platform/tree/search?q=" + encoded, MediaType.X_GEDCOMX_ATOM_JSON).Result;
 
 			Console.WriteLine($"Found close hits {searchResult.searchInfo[0].closeHits} with {searchResult.searchInfo[0].totalHits} total");
 
@@ -93,7 +91,7 @@ namespace Example1
 				if (searchResult.results > (searchResult.index + searchResult.entries.Count))
 				{
 					Console.WriteLine($"fetching another. total={totalFetched}");
-					searchResult = ft.Get(searchResult.links.next.href.Value, MediaType.ATOM_GEDCOMX_JSON_MEDIA_TYPE).Result;
+					searchResult = ft.Get(searchResult.links.next.href.Value, MediaType.X_GEDCOMX_ATOM_JSON).Result;
 				}
 			}
 

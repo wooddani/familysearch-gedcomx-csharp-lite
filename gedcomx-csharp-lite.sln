@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gedcomx-csharp-lite", "gedcomx-csharp-lite\gedcomx-csharp-lite.csproj", "{DC9C289B-4ECC-41C5-8845-D29BEDACD45E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gedcomx.Api.Lite", "gedcomx-csharp-lite\Gedcomx.Api.Lite.csproj", "{DC9C289B-4ECC-41C5-8845-D29BEDACD45E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example1", "Example1\Example1.csproj", "{9CD0258C-FC2D-493A-8D27-F6BD06C6776D}"
 EndProject

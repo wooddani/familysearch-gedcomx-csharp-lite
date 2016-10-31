@@ -69,9 +69,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\gedcomx-csharp-lite\gedcomx-csharp-lite.csproj">
+    <ProjectReference Include="..\gedcomx-csharp-lite\Gedcomx.Api.Lite.csproj">
       <Project>{dc9c289b-4ecc-41c5-8845-d29bedacd45e}</Project>
-      <Name>gedcomx-csharp-lite</Name>
+      <Name>Gedcomx.Api.Lite</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
