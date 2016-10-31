@@ -4,6 +4,6 @@
 	{
 		Production,
 		Beta,
-		Sandbox
+		Integration		
 	}
 }

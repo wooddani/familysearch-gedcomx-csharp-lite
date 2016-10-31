@@ -17,6 +17,25 @@ namespace gedcomx_csharp_lite
 
 		public string AccessToken { get { return _accessToken; } }
 
+		public FamilySearchSDK(string username, string password, string clientId, Environment environment = Environment.Integration)
+		{
+			IDictionary<String, String> formData = new Dictionary<String, String>();
+			formData.Add("grant_type", "password");
+			formData.Add("username", username);
+			formData.Add("password", password);
+			formData.Add("client_id", clientId);
+
+			GetAccessToken(formData, environment);
+
+			InitClient(environment);
+		}
+
+		public FamilySearchSDK(string accessToken, Environment environment = Environment.Integration)
+		{
+			_accessToken = accessToken;
+			InitClient(environment);
+		}
+
 		private void InitClient(Environment environment)
 		{
 			switch (environment)
@@ -27,8 +46,8 @@ namespace gedcomx_csharp_lite
 				case Environment.Beta:
 					_baseUrl = new Uri("https://beta.familysearch.org/");
 					break;
-				case Environment.Sandbox:
-					_baseUrl = new Uri("https://sandbox.familysearch.org/");
+				case Environment.Integration:
+					_baseUrl = new Uri("https://integration.familysearch.org/");
 					break;
 				default: // Do nothing
 					throw new ApplicationException("Unexpected environment");
@@ -39,7 +58,7 @@ namespace gedcomx_csharp_lite
 			_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 		}
 
-		public static string GetAcceptContentType(MediaType mediaType)
+		private static string GetAcceptContentType(MediaType mediaType)
 		{
 			switch (mediaType)
 			{
@@ -66,25 +85,7 @@ namespace gedcomx_csharp_lite
 			return type;
 		}
 
-		public FamilySearchSDK(string username, string password, string clientId, Environment environment = Environment.Sandbox)
-		{
-			IDictionary<String, String> formData = new Dictionary<String, String>();
-			formData.Add("grant_type", "password");
-			formData.Add("username", username);
-			formData.Add("password", password);
-			formData.Add("client_id", clientId);
-
-			GetAccessToken(formData, environment);
-
-			InitClient(environment);
-		}
-
-		public FamilySearchSDK(string accessToken, Environment environment = Environment.Sandbox)
-		{
-			_accessToken = accessToken;
-			InitClient(environment);
-		}
-
+		
 		private void GetAccessToken(IDictionary<string, string> formData, Environment environment)
 		{
 			using (var httpClient = new HttpClient())
@@ -99,13 +100,14 @@ namespace gedcomx_csharp_lite
 					switch (environment)
 					{
 						case Environment.Production:
-							url = "https://integration.familysearch.org/cis-web/oauth2/v3/token";
+							//url = "https://integration.familysearch.org/cis-web/oauth2/v3/token";
+							url = "https://ident.familysearch.org/cis-web/oauth2/v3/token";
 							break;
 						case Environment.Beta:
-							url = "https://integration.familysearch.org/cis-web/oauth2/v3/token";
+							url = "https://identbeta.familysearch.org/cis-web/oauth2/v3/token";
 							break;
-						case Environment.Sandbox:
-							url = "https://integration.familysearch.org/cis-web/oauth2/v3/token";
+						case Environment.Integration:
+							url = "https://identint.familysearch.org/cis-web/oauth2/v3/token";
 							break;
 						default: // Do nothing
 							throw new ApplicationException("Unexpected environment");
@@ -177,6 +179,10 @@ namespace gedcomx_csharp_lite
 			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
 			var response = await _client.PutAsync(url, body).ConfigureAwait(false);
 			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
+			if (string.IsNullOrEmpty(s))
+			{
+				return response; // No content is sent back, so send the response.
+			}
 			return JsonConvert.DeserializeObject<dynamic>(s);
 		}
 
@@ -189,22 +195,6 @@ namespace gedcomx_csharp_lite
 			return JsonConvert.DeserializeObject<T>(s);
 		}
 
-		public async Task<HttpResponseMessage> Put_GetResponse(string apiRoute, string content, MediaType mediaType)
-		{
-			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
-			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
-			return await _client.PutAsync(url, body).ConfigureAwait(false);
-		}
-
-		public async Task<HttpResponseMessage> Put_GetContent(string apiRoute, string content, MediaType mediaType)
-		{
-			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
-			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
-			var response = await _client.PutAsync(url, body).ConfigureAwait(false);
-			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
-			return JsonConvert.DeserializeObject<dynamic>(s);
-		}
-
 		public async Task<dynamic> Post(string apiRoute, string content, MediaType mediaType)
 		{
 			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
@@ -215,22 +205,6 @@ namespace gedcomx_csharp_lite
 			{
 				return response; // No content is sent back, so send the response.
 			}
-			return JsonConvert.DeserializeObject<dynamic>(s);
-		}
-
-		public async Task<HttpResponseMessage> Post_GetResponse(string apiRoute, string content, MediaType mediaType)
-		{
-			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
-			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
-			return await _client.PostAsync(url, body).ConfigureAwait(false);
-		}
-
-		public async Task<HttpResponseMessage> Post_GetContent(string apiRoute, string content, MediaType mediaType)
-		{
-			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
-			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
-			var response = await _client.PostAsync(url, body).ConfigureAwait(false);
-			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
 			return JsonConvert.DeserializeObject<dynamic>(s);
 		}
 
@@ -254,5 +228,41 @@ namespace gedcomx_csharp_lite
 			}
 			return JsonConvert.DeserializeObject<dynamic>(s);
 		}
+
+		#region Uncommon Calls
+
+		public async Task<HttpResponseMessage> Post_GetResponse(string apiRoute, string content, MediaType mediaType)
+		{
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
+			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
+			return await _client.PostAsync(url, body).ConfigureAwait(false);
+		}
+
+		public async Task<HttpResponseMessage> Post_GetContent(string apiRoute, string content, MediaType mediaType)
+		{
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
+			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
+			var response = await _client.PostAsync(url, body).ConfigureAwait(false);
+			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<dynamic>(s);
+		}
+
+		public async Task<HttpResponseMessage> Put_GetResponse(string apiRoute, string content, MediaType mediaType)
+		{
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
+			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
+			return await _client.PutAsync(url, body).ConfigureAwait(false);
+		}
+
+		public async Task<HttpResponseMessage> Put_GetContent(string apiRoute, string content, MediaType mediaType)
+		{
+			var url = new Uri(_baseUrl, apiRoute.Replace(_baseUrl.OriginalString, ""));
+			var body = new StringContent(content, Encoding.UTF8, SetMediaType(mediaType));
+			var response = await _client.PutAsync(url, body).ConfigureAwait(false);
+			var s = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<dynamic>(s);
+		}
+
+		#endregion
 	}
 }
