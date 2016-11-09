@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Gedcomx.Api.Lite.Core
+namespace Gedcomx.Api.Lite
 {
 	public class FamilySearchSDK
 	{

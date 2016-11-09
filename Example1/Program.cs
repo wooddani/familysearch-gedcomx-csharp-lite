@@ -18,7 +18,8 @@ namespace Example1
 
 		static void Main(string[] args)
 		{
-			var ft = new FamilySearchSDK("sdktester", "1234sdkpass", "WCQY-7J1Q-GKVV-7DNM-SQ5M-9Q5H-JX3H-CMJK");
+			var ft = new FamilySearchSDK(Properties.Settings.Default.UserName, 
+				Properties.Settings.Default.Password, Properties.Settings.Default.ClientId);
 
 			// Create a Person
 			var gedcomx = new Gx.Gedcomx();

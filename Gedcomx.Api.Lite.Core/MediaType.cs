@@ -1,4 +1,4 @@
-﻿namespace Gedcomx.Api.Lite.Core
+﻿namespace Gedcomx.Api.Lite
 {
 	/// <summary>
 	/// A collection of accept or content types to use in REST API requests.

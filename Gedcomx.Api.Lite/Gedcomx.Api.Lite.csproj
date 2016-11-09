@@ -44,9 +44,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Environment.cs" />
-    <Compile Include="FamilySearchSDK.cs" />
-    <Compile Include="MediaType.cs" />
+    <Compile Include="..\Gedcomx.Api.Lite.Core\Environment.cs">
+      <Link>Environment.cs</Link>
+    </Compile>
+    <Compile Include="..\Gedcomx.Api.Lite.Core\FamilySearchSDK.cs">
+      <Link>FamilySearchSDK.cs</Link>
+    </Compile>
+    <Compile Include="..\Gedcomx.Api.Lite.Core\MediaType.cs">
+      <Link>MediaType.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace Gedcomx.Api.Lite.Core
+﻿namespace Gedcomx.Api.Lite
 {
 	public enum Environment
 	{
