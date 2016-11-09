@@ -33,16 +33,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gedcomx.Model, Version=1.0.6131.22084, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Gedcomx.Model.1.0.6131.22084\lib\net45\Gedcomx.Model.dll</HintPath>
+    <Reference Include="Gedcomx.Model, Version=1.0.6144.20322, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gedcomx.Model.1.0.6144.20322\lib\net45\Gedcomx.Model.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Gedcomx.Model.Fs, Version=1.0.6131.22085, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Gedcomx.Model.Fs\bin\Debug\Gedcomx.Model.Fs.dll</HintPath>
+    <Reference Include="Gedcomx.Model.Fs, Version=1.0.6144.20322, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gedcomx.Model.Fs.1.0.6144.20322\lib\net45\Gedcomx.Model.Fs.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Gedcomx.Model.Rs, Version=1.0.6131.22085, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Gedcomx.Model.Rs.1.0.6131.22085\lib\net45\Gedcomx.Model.Rs.dll</HintPath>
+    <Reference Include="Gedcomx.Model.Rs, Version=1.0.6144.20322, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gedcomx.Model.Rs.1.0.6144.20322\lib\net45\Gedcomx.Model.Rs.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -69,7 +69,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\gedcomx-csharp-lite\Gedcomx.Api.Lite.csproj">
+    <ProjectReference Include="..\Gedcomx.Api.Lite\Gedcomx.Api.Lite.csproj">
       <Project>{dc9c289b-4ecc-41c5-8845-d29bedacd45e}</Project>
       <Name>Gedcomx.Api.Lite</Name>
     </ProjectReference>

@@ -7,8 +7,8 @@
     <ProjectGuid>{DC9C289B-4ECC-41C5-8845-D29BEDACD45E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>gedcomx_csharp_lite</RootNamespace>
-    <AssemblyName>gedcomx-csharp-lite</AssemblyName>
+    <RootNamespace>Gedcomx.Api.Lite</RootNamespace>
+    <AssemblyName>Gedcomx.Api.Lite</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -50,6 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Gedcomx.Api.Lite.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

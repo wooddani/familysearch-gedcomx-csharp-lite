@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gedcomx.Api.Lite", "gedcomx-csharp-lite\Gedcomx.Api.Lite.csproj", "{DC9C289B-4ECC-41C5-8845-D29BEDACD45E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gedcomx.Api.Lite", "Gedcomx.Api.Lite\Gedcomx.Api.Lite.csproj", "{DC9C289B-4ECC-41C5-8845-D29BEDACD45E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example1", "Example1\Example1.csproj", "{9CD0258C-FC2D-493A-8D27-F6BD06C6776D}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Gedcomx.Api.Lite.Core", "Gedcomx.Api.Lite.Core\Gedcomx.Api.Lite.Core.xproj", "{8335F096-EFDD-4380-B576-032C25D0939A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{9CD0258C-FC2D-493A-8D27-F6BD06C6776D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CD0258C-FC2D-493A-8D27-F6BD06C6776D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CD0258C-FC2D-493A-8D27-F6BD06C6776D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8335F096-EFDD-4380-B576-032C25D0939A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8335F096-EFDD-4380-B576-032C25D0939A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8335F096-EFDD-4380-B576-032C25D0939A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8335F096-EFDD-4380-B576-032C25D0939A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
