@@ -9,6 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example1", "Example1\Exampl
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Gedcomx.Api.Lite.Core", "Gedcomx.Api.Lite.Core\Gedcomx.Api.Lite.Core.xproj", "{8335F096-EFDD-4380-B576-032C25D0939A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{98881E50-9F28-4575-9CB2-B095AED71915}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gedcomx.Api.Lite.Tests", "Gedcomx.Api.Lite.Tests\Gedcomx.Api.Lite.Tests.csproj", "{8371A813-0389-4A98-B9D7-986BF98C5AD4}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Example2.Core", "Example2.Core\Example2.Core.xproj", "{577081FC-D9A1-4AFF-B5DF-FEA1E8AA2234}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +36,14 @@ Global
 		{8335F096-EFDD-4380-B576-032C25D0939A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8335F096-EFDD-4380-B576-032C25D0939A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8335F096-EFDD-4380-B576-032C25D0939A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8371A813-0389-4A98-B9D7-986BF98C5AD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8371A813-0389-4A98-B9D7-986BF98C5AD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8371A813-0389-4A98-B9D7-986BF98C5AD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8371A813-0389-4A98-B9D7-986BF98C5AD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{577081FC-D9A1-4AFF-B5DF-FEA1E8AA2234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{577081FC-D9A1-4AFF-B5DF-FEA1E8AA2234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{577081FC-D9A1-4AFF-B5DF-FEA1E8AA2234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{577081FC-D9A1-4AFF-B5DF-FEA1E8AA2234}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

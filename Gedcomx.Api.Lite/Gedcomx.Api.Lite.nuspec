@@ -8,8 +8,8 @@
     <owners>$author$</owners>
     <projectUrl>https://github.com/wooddani/familysearch-gedcomx-csharp-lite</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
-    <releaseNotes>initial release</releaseNotes>
+    <description>This is the C# Lite version to contact the Family Search GEDCOM X APIs. It will help with authentication and media types through HttpClient.</description>
+    <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags></tags>
   </metadata>

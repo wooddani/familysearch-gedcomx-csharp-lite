@@ -1,4 +1,5 @@
-﻿using Gedcomx.Api.Lite;
+﻿using Example1.Properties;
+using Gedcomx.Api.Lite;
 using Gx.Common;
 using Gx.Fs.Tree;
 using Newtonsoft.Json;
@@ -18,8 +19,7 @@ namespace Example1
 
 		static void Main(string[] args)
 		{
-			var ft = new FamilySearchSDK(Properties.Settings.Default.UserName, 
-				Properties.Settings.Default.Password, Properties.Settings.Default.ClientId);
+			var ft = new FamilySearchSDK(Settings.Default.UserName, Settings.Default.Password, Settings.Default.ApplicationKey, "Example1", "1.0.0", Gedcomx.Api.Lite.Environment.Integration);
 
 			// Create a Person
 			var gedcomx = new Gx.Gedcomx();
